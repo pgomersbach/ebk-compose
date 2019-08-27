@@ -1,0 +1,45 @@
+########################## Heartbeat Configuration ###########################
+heartbeat.max_start_delay: 10s
+name: ${NODE_NAME}
+setup.dashboards.enabled: true
+setup.template.enabled: true
+setup.kibana:
+  host: "kibana:5601"
+
+heartbeat.monitors:
+- type: http
+  urls: ["http://elasticsearch:9200"]
+  check.request:
+       method: GET
+  check.response:
+       body: "You Know, for Search"
+  schedule: '@every 10s'
+
+- type: http
+  urls: ["http://logstash:9600"]
+  check.request:
+       method: GET
+  schedule: '@every 10s'
+
+- type: http
+  urls: ["http://kibana:5601"]
+  check.request:
+       method: GET
+  schedule: '@every 10s'
+
+processors:
+- add_docker_metadata:
+    host: "unix:///var/run/docker.sock"
+#- add_host_metadata:
+#    netinfo.enabled: true
+
+output:
+#  logstash:
+#    hosts: ["logstash:5044"]
+   elasticsearch:
+     hosts: ["http://elasticsearch:9200"]
+
+logging.level: warning
+logging.json: false
+logging.metrics.enabled: false
+ssl.verification_mode: none

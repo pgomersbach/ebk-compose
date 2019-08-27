@@ -1,0 +1,45 @@
+########################## Filebeat Configuration ###########################
+filebeat.max_start_delay: 10s
+name: ${NODE_NAME}
+setup.dashboards.enabled: true
+setup.template.enabled: true
+setup.kibana:
+  host: "kibana:5601"
+
+filebeat.modules:
+- module: system
+  syslog:
+    enabled: true
+  auth:
+    enabled: true
+
+filebeat.inputs:
+- type: docker
+  combine_partial: true
+  containers:
+    path: "/var/lib/docker/containers"
+    ids:
+      - "*"
+  json.message_key: log
+  json.keys_under_root: true
+  json.add_error_key: false
+  json.ignore_decoding_error: true
+
+processors:
+- add_docker_metadata:
+    host: "unix:///var/run/docker.sock"
+#- add_host_metadata:
+#    netinfo.enabled: true
+#- decode_json_fields:
+#    fields: ["log"]
+
+output:
+#  logstash:
+#    hosts: ["logstash:5044"]
+   elasticsearch: 
+     hosts: ["http://elasticsearch:9200"]
+
+logging.level: warning
+logging.json: false
+logging.metrics.enabled: false
+ssl.verification_mode: none
