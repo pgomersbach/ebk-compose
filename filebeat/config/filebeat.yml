@@ -20,7 +20,7 @@ filebeat.inputs:
     path: "/var/lib/docker/containers"
     ids:
       - "*"
-  json.message_key: log
+#  json.message_key: log
   json.keys_under_root: true
   json.add_error_key: false
   json.ignore_decoding_error: true
