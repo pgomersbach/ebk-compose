@@ -12,3 +12,5 @@ xpack.monitoring.ui.container.elasticsearch.enabled: false
 #
 elasticsearch.username: elastic
 elasticsearch.password: changeme
+
+logging.quiet: true
