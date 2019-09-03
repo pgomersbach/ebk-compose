@@ -15,4 +15,4 @@ discovery.type: single-node
 #
 xpack.license.self_generated.type: basic
 xpack.security.enabled: false
-xpack.monitoring.collection.enabled: true
+# xpack.monitoring.collection.enabled: true

@@ -1,7 +1,7 @@
 ########################## Heartbeat Configuration ###########################
 heartbeat.max_start_delay: 10s
 name: ${NODE_NAME}
-setup.dashboards.enabled: true
+setup.dashboards.enabled: false
 setup.template.enabled: true
 setup.kibana:
   host: "kibana:5601"

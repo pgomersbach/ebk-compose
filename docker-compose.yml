@@ -1,27 +1,25 @@
 version: '2.1'
 
 services:
-  apm:
-    build:
-      context: apm-server/
-      args:
-        ELK_VERSION: $ELK_VERSION
-#    user: root
-#    command: t -e -strict.perms=false
-    volumes:
-      - ./apm-server/config/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
-    ports:
-      - "8200:8200"
-    environment:
-      LS_JAVA_OPTS: "-Xmx128m -Xms128m"
-      NODE_NAME: $HOSTNAME
-    depends_on:
-      elasticsearch: { condition: service_healthy }
-      kibana: { condition: service_healthy }
-    healthcheck:
-      test: ["CMD", "curl","-s" ,"-f", "http://localhost:8200/"]
-    networks:
-      - elk
+#  apm:
+#    build:
+#      context: apm-server/
+#      args:
+#        ELK_VERSION: $ELK_VERSION
+#    volumes:
+#      - ./apm-server/config/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+#    ports:
+#      - "8200:8200"
+#    environment:
+#      LS_JAVA_OPTS: "-Xmx128m -Xms128m"
+#      NODE_NAME: $HOSTNAME
+#    depends_on:
+#      elasticsearch: { condition: service_healthy }
+#      kibana: { condition: service_healthy }
+#    healthcheck:
+#      test: ["CMD", "curl","-s" ,"-f", "http://localhost:8200/"]
+#    networks:
+#      - elk
 
   filebeat:
     build:
@@ -99,7 +97,12 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx768m -Xms768m"
+      bootstrap.memory_lock: "true"
       ELASTIC_PASSWORD: changeme
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     healthcheck:
       test: ["CMD", "curl","-s" ,"-f", "http://localhost:9200/_cat/health"]
     networks:
