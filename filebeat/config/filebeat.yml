@@ -12,6 +12,9 @@ filebeat.modules:
     enabled: true
   auth:
     enabled: true
+- module: postgresql
+  log:
+    enabled: true
 
 filebeat.inputs:
 - type: docker

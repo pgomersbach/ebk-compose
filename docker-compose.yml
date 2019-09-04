@@ -1,25 +1,25 @@
 version: '2.1'
 
 services:
-#  apm:
-#    build:
-#      context: apm-server/
-#      args:
-#        ELK_VERSION: $ELK_VERSION
-#    volumes:
-#      - ./apm-server/config/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
-#    ports:
-#      - "8200:8200"
-#    environment:
-#      LS_JAVA_OPTS: "-Xmx128m -Xms128m"
-#      NODE_NAME: $HOSTNAME
-#    depends_on:
-#      elasticsearch: { condition: service_healthy }
-#      kibana: { condition: service_healthy }
-#    healthcheck:
-#      test: ["CMD", "curl","-s" ,"-f", "http://localhost:8200/"]
-#    networks:
-#      - elk
+  apm-server:
+    build:
+      context: apm-server/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./apm-server/config/apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+    ports:
+      - "8200:8200"
+    environment:
+      LS_JAVA_OPTS: "-Xmx128m -Xms128m"
+      NODE_NAME: $HOSTNAME
+    depends_on:
+      elasticsearch: { condition: service_healthy }
+      kibana: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "curl","-s" ,"-f", "http://localhost:8200/"]
+    networks:
+      - elk
 
   filebeat:
     build:
