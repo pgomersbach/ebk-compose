@@ -1,0 +1,15 @@
+apm-server:
+  # Defines the host and port the server is listening on. Use "unix:/path/to.sock" to listen on a unix domain socket.
+  host: "0.0.0.0:8200"
+name: ${NODE_NAME}
+# setup.dashboards.enabled: true
+setup.template.enabled: true
+setup.kibana:
+  host: "kibana:5601"
+
+output.elasticsearch:
+    hosts: ["elasticsearch:9200"]
+
+logging.level: warning
+logging.json: false
+logging.metrics.enabled: false
