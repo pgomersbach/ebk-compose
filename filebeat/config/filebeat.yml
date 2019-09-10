@@ -42,7 +42,7 @@ output:
    elasticsearch: 
      hosts: ["http://elasticsearch:9200"]
 
-logging.level: warning
+logging.level: info
 logging.json: false
-logging.metrics.enabled: false
+logging.metrics.enabled: true
 ssl.verification_mode: none

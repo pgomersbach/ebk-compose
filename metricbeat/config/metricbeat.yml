@@ -6,6 +6,32 @@ setup.template.enabled: true
 setup.kibana:
   host: "kibana:5601"
 
+metricbeat.autodiscover:
+  providers:
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
+              docker.container.image: postgres
+          config:
+            - module: postgresql
+              metricsets: ["database", "bgwriter", "activity"]
+              period: 10s
+              hosts: "postgres://postgres@${data.host}:5432?sslmode=disable"
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
+              docker.container.image: kibana
+          config:
+            - module: kibana
+              metricsets: ["status"]
+              period: 10s
+              hosts: "${data.host}:5601"
+
 metricbeat.modules:
 - module: system
   metricsets:
@@ -76,7 +102,7 @@ output:
    elasticsearch:
      hosts: ["http://elasticsearch:9200"]
 
-logging.level: warning
+logging.level: info
 logging.json: false
-logging.metrics.enabled: false
+logging.metrics.enabled: true
 ssl.verification_mode: none
