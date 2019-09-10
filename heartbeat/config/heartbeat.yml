@@ -27,6 +27,12 @@ heartbeat.monitors:
        method: GET
   schedule: '@every 10s'
 
+- type: http
+  urls: ["http://web:3000"]
+  check.request:
+       method: GET
+  schedule: '@every 10s'
+
 processors:
 - add_docker_metadata:
     host: "unix:///var/run/docker.sock"
