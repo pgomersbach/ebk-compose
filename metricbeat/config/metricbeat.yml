@@ -13,6 +13,19 @@ metricbeat.autodiscover:
       templates:
         - condition:
             contains:
+              docker.container.image: apache
+          config:
+            - module: apache
+              server_status_path: "server-status"
+              metricsets: ["status"]
+              period: 10s
+              hosts: "http://${data.host}:80"
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
               docker.container.image: postgres
           config:
             - module: postgresql
