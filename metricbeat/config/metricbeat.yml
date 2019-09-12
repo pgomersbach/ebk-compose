@@ -8,6 +8,21 @@ setup.kibana:
 
 metricbeat.autodiscover:
   providers:
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
+              docker.container.image: rabbitmq
+          config:
+            - module: rabbitmq
+              metricsets: ["node", "queue", "connection", "exchange"]
+              username: guest
+              password: guest
+              period: 10s
+              hosts: ["${data.host}:15672"]
+
     - type: docker
       labels.dedot: true
       templates:
@@ -19,7 +34,6 @@ metricbeat.autodiscover:
               metricsets: ["info", "stat"]
               period: 10s
               hosts: ["tcp://${data.host}:14567"]
-              # hosts: "http://${data.host}:${data.port}"
 
     - type: docker
       labels.dedot: true
