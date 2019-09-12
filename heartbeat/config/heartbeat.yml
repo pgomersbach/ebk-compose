@@ -8,6 +8,13 @@ setup.kibana:
 
 heartbeat.monitors:
 - type: http
+  name: haproxy
+  urls: ["http://haproxy:9000"]
+  check.request:
+       method: GET
+  schedule: '@every 10s'
+
+- type: http
   name: elasticsearch
   urls: ["http://elasticsearch:9200"]
   check.request:

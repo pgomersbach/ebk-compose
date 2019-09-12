@@ -13,13 +13,26 @@ metricbeat.autodiscover:
       templates:
         - condition:
             contains:
+              docker.container.image: haproxy
+          config:
+            - module: haproxy
+              metricsets: ["info", "stat"]
+              period: 10s
+              hosts: ["tcp://${data.host}:14567"]
+              # hosts: "http://${data.host}:${data.port}"
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
               docker.container.image: apache
           config:
             - module: apache
               server_status_path: "server-status"
               metricsets: ["status"]
               period: 10s
-              hosts: "http://${data.host}:80"
+              hosts: "http://${data.host}:${data.port}"
 
     - type: docker
       labels.dedot: true
@@ -31,7 +44,7 @@ metricbeat.autodiscover:
             - module: postgresql
               metricsets: ["database", "bgwriter", "activity"]
               period: 10s
-              hosts: "postgres://postgres@${data.host}:5432?sslmode=disable"
+              hosts: "postgres://postgres@${data.host}:${data.port}?sslmode=disable"
 
     - type: docker
       labels.dedot: true
@@ -43,7 +56,7 @@ metricbeat.autodiscover:
             - module: kibana
               metricsets: ["status"]
               period: 10s
-              hosts: "${data.host}:5601"
+              hosts: "${data.host}:${data.port}"
 
 metricbeat.modules:
 - module: system

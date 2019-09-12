@@ -16,10 +16,28 @@ filebeat.autodiscover:
               docker.container.image: apache
           config:
             - module: apache
-              log:
-                access:
+              access:
+                input:
                   type: docker
-                  enabled: true
+                  containers.ids:
+                    - ${data.docker.container.id}
+              error:
+                input:
+                  type: docker
+                  containers.ids:
+                    - ${data.docker.container.id}
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
+              docker.container.image: haproxy
+          config:
+            - module: haproxy
+              log:
+                input:
+                  type: docker
                   containers.ids:
                     - "${data.docker.container.id}"
 
@@ -53,6 +71,6 @@ output:
      hosts: ["http://elasticsearch:9200"]
 
 logging.level: info
-logging.json: false
-logging.metrics.enabled: true
+logging.json: true
+logging.metrics.enabled: false
 ssl.verification_mode: none
