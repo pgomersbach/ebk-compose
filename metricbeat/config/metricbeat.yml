@@ -14,6 +14,18 @@ metricbeat.autodiscover:
       templates:
         - condition:
             contains:
+              docker.container.image: mongo
+          config:
+            - module: mongodb
+              metricsets: ["dbstats", "status", "collstats", "metrics"]
+              period: 10s
+              hosts: ["${data.host}"]          
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
               docker.container.image: rabbitmq
           config:
             - module: rabbitmq

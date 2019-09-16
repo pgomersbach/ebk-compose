@@ -13,6 +13,20 @@ filebeat.autodiscover:
       templates:
         - condition:
             contains:
+              docker.container.image: mongo
+          config:
+            - module: mongodb
+              log:
+                input:
+                  type: docker
+                  containers.ids:
+                    - "${data.docker.container.id}"
+
+    - type: docker
+      labels.dedot: true
+      templates:
+        - condition:
+            contains:
               docker.container.image: apache
           config:
             - module: apache
