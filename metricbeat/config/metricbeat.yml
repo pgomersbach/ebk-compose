@@ -98,7 +98,6 @@ metricbeat.modules:
     - uptime
     - core
     - diskio
-    - socket
   interface: [enp0s3,eth0]
   enabled: true
   period: 10s
